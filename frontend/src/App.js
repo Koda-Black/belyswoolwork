@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 import { HomeScreen } from "./screens/HomeScreen";
 import { ProductScreen } from "./screens/ProductScreen";
 import { Shop } from "./screens/Shop";
@@ -27,6 +28,7 @@ function App() {
             <Route path="/blog" element={<Blog />} />
           </Routes>
         </main>
+        <Footer />
       </div>
     </BrowserRouter>
   );

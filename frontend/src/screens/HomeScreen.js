@@ -1,13 +1,21 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import data from "../data";
-import { PiShoppingCartBold } from "react-icons/pi";
-import { AiFillStar } from "react-icons/ai";
+import FeaturedProducts from "../components/FeaturedProducts";
 
 export const HomeScreen = () => {
   return (
     <div>
-      <section id="feature" class="section-p1">
+      <section id="hero">
+        <h4>Trade-in-offer</h4>
+        <h2>Super value deals</h2>
+        <h1>On all products</h1>
+        <p>Save more with coupons & up to 70% off!</p>
+        <button>
+          <Link to="/shop">Shop Now</Link>
+        </button>
+      </section>
+      <section id="feature" className="section-p1">
         {data.features.map((feature) => (
           <div className="feature__box" key={feature.title}>
             <img src={feature.image} alt={feature.title} />
@@ -15,36 +23,13 @@ export const HomeScreen = () => {
           </div>
         ))}
       </section>
-      <section id="product1" className="section-p1">
-        <h2>Featured Products</h2>
-        <p>Summer Collection Top Design</p>
-        <div className="product__container">
-          {data.products.map((product) => (
-            <div className="product" key={product.slug}>
-              <Link to={`/product/${product.slug}`}>
-                <img src={product.image} alt={product.name} />
-              </Link>
-              <div className="description">
-                <span>{product.brand}</span>
-                <Link to={`/product/${product.slug}`}>
-                  <h5>{product.name}</h5>
-                </Link>
-                <div className="star">
-                  <AiFillStar className="starIcon" />
-                  <AiFillStar className="starIcon" />
-                  <AiFillStar className="starIcon" />
-                  <AiFillStar className="starIcon" />
-                  <AiFillStar className="starIcon" />
-                </div>
-                <h4>₦ {product.price}</h4>
-              </div>
-
-              <Link to="/cart">
-                <PiShoppingCartBold className="cartIcon" />
-              </Link>
-            </div>
-          ))}
-        </div>
+      <FeaturedProducts />
+      <section id="banner" className="section-m1">
+        <h4>Trending wool pieces</h4>
+        <h2>
+          Up to<span> 50% off</span> - All fabrics & Accessories
+        </h2>
+        <button className="normal">Explore More</button>
       </section>
     </div>
   );

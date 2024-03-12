@@ -1,6 +1,8 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import data from "../data";
+import FeaturedProducts from "../components/FeaturedProducts";
+import Newsletter from "../components/Newsletter";
 
 export const ProductScreen = () => {
   const params = useParams;
@@ -8,6 +10,7 @@ export const ProductScreen = () => {
 
   return (
     <main>
+      <h1>{slug}</h1>
       {/* <section id="productDetails" className="section-p1">
         {data.products.map((product) => (
           <div classNameName="single-pro-img" key={product.name}>
@@ -34,7 +37,7 @@ export const ProductScreen = () => {
       <section id="productDetails" className="section-p1">
         <div className="single-pro-img">
           <img
-            src="img/products/f1.jpg"
+            src="/images/products/f1.jpg"
             width="100%"
             id="mainImg"
             alt="product description"
@@ -43,7 +46,7 @@ export const ProductScreen = () => {
           <div className="small-img-group">
             <div className="small-img-col">
               <img
-                src="img/products/f2.jpg"
+                src="/images/products/f2.jpg"
                 width="100%"
                 className="small-img"
                 alt="product variation"
@@ -52,7 +55,7 @@ export const ProductScreen = () => {
 
             <div className="small-img-col">
               <img
-                src="img/products/f3.jpg"
+                src="/images/products/f3.jpg"
                 width="100%"
                 className="small-img"
                 alt="product variation"
@@ -61,7 +64,7 @@ export const ProductScreen = () => {
 
             <div className="small-img-col">
               <img
-                src="img/products/f4.jpg"
+                src="/images/products/f4.jpg"
                 width="100%"
                 className="small-img"
                 alt="product variation"
@@ -95,8 +98,8 @@ export const ProductScreen = () => {
           </span>
         </div>
       </section>
-
-      <h1>{slug}</h1>
+      <FeaturedProducts products={data.products} limits={4} />
+      <Newsletter />
     </main>
   );
 };
