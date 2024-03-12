@@ -1,4 +1,7 @@
 import { Link } from "react-router-dom";
+import { IoBagHandleOutline } from "react-icons/io5";
+import { AiOutlineClose } from "react-icons/ai";
+import { RiMenu3Fill } from "react-icons/ri";
 
 const Navbar = () => {
   //   const { logout } = useLogout();
@@ -16,7 +19,7 @@ const Navbar = () => {
       <nav>
         <ul id="navbar">
           <li>
-            <Link to="/home" className="active">
+            <Link to="/" className="active">
               Home
             </Link>
           </li>
@@ -33,8 +36,14 @@ const Navbar = () => {
           </li>
 
           <li>
-            <Link to="/cart">Cart</Link>
+            <Link to="/cart">
+              <IoBagHandleOutline id="lg-bag" style={{ fontSize: 20 }} />
+            </Link>
           </li>
+
+          <div id="close">
+            <AiOutlineClose />
+          </div>
         </ul>
         {/* {user && (
             <div>
@@ -51,10 +60,10 @@ const Navbar = () => {
       </nav>
 
       <div id="mobile">
-        <a href="cart.html">
-          <ion-icon name="bag-handle-outline"></ion-icon>
-        </a>
-        <ion-icon id="bar" name="menu"></ion-icon>
+        <Link to="/cart" className="mobile-cart">
+          <IoBagHandleOutline />
+        </Link>
+        <RiMenu3Fill id="bar" />
       </div>
     </header>
   );
