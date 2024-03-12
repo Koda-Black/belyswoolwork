@@ -12,20 +12,12 @@ const data = {
         "/images/products/f4.jpg",
       ],
       sizes: ["XL", "XXL", "small", "large"],
-      images: [
-        "/images/products/f2.jpg",
-        "/images/products/f3.jpg",
-        "/images/products/f4.jpg",
-      ],
-      sizes: ["XL", "XXL", "small", "large"],
       price: 16000,
       countInStock: 15,
       brand: "addidas",
       rating: 4.5,
       numReviews: 10,
-      description: "hig quality shirt",
-      richDescription:
-        "The Gildan Ultra Cotton T-shirt is made from a substantial 6.0 oz. per sq. yd. fabric constructed from 100% cotton, this classic fit preshrunk jersey knit provides unmatched comfort with each wear. Featuring a taped neck and shoulder, and a seamless double-needle collar, and available in a range of colors, it offers it all in the ultimate head-turning package.",
+      description: "high quality shirt",
       richDescription:
         "The Gildan Ultra Cotton T-shirt is made from a substantial 6.0 oz. per sq. yd. fabric constructed from 100% cotton, this classic fit preshrunk jersey knit provides unmatched comfort with each wear. Featuring a taped neck and shoulder, and a seamless double-needle collar, and available in a range of colors, it offers it all in the ultimate head-turning package.",
     },
@@ -47,10 +39,7 @@ const data = {
       brand: "addidas",
       rating: 4.5,
       numReviews: 10,
-      description: "hig quality shirt",
-      richDescription:
-        "The Gildan Ultra Cotton T-shirt is made from a substantial 6.0 oz. per sq. yd. fabric constructed from 100% cotton, this classic fit preshrunk jersey knit provides unmatched comfort with each wear. Featuring a taped neck and shoulder, and a seamless double-needle collar, and available in a range of colors, it offers it all in the ultimate head-turning package.",
-      description: "hig quality shirt",
+      description: "high quality shirt",
       richDescription:
         "The Gildan Ultra Cotton T-shirt is made from a substantial 6.0 oz. per sq. yd. fabric constructed from 100% cotton, this classic fit preshrunk jersey knit provides unmatched comfort with each wear. Featuring a taped neck and shoulder, and a seamless double-needle collar, and available in a range of colors, it offers it all in the ultimate head-turning package.",
     },
@@ -72,7 +61,7 @@ const data = {
       brand: "addidas",
       rating: 4.5,
       numReviews: 10,
-      description: "hig quality shirt",
+      description: "high quality shirt",
       richDescription:
         "The Gildan Ultra Cotton T-shirt is made from a substantial 6.0 oz. per sq. yd. fabric constructed from 100% cotton, this classic fit preshrunk jersey knit provides unmatched comfort with each wear. Featuring a taped neck and shoulder, and a seamless double-needle collar, and available in a range of colors, it offers it all in the ultimate head-turning package.",
     },
@@ -94,7 +83,7 @@ const data = {
       brand: "addidas",
       rating: 4.5,
       numReviews: 10,
-      description: "hig quality shirt",
+      description: "high quality shirt",
       richDescription:
         "The Gildan Ultra Cotton T-shirt is made from a substantial 6.0 oz. per sq. yd. fabric constructed from 100% cotton, this classic fit preshrunk jersey knit provides unmatched comfort with each wear. Featuring a taped neck and shoulder, and a seamless double-needle collar, and available in a range of colors, it offers it all in the ultimate head-turning package.",
     },
