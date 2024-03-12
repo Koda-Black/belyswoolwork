@@ -80,6 +80,7 @@ export const ProductScreen = () => {
             <option>XXL</option>
             <option>Small</option>
             <option>Large</option>
+            <option>XLarge</option>
           </select>
           <input type="number" value="1" />
           <button className="normal">Add To Cart</button>
