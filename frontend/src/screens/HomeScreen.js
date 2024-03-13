@@ -1,7 +1,10 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import data from "../data";
+
+import { PiShoppingCartBold } from "react-icons/pi";
+import { AiFillStar } from "react-icons/ai";
 import FeaturedProducts from "../components/FeaturedProducts";
+import Newsletter from "../components/Newsletter";
 
 export const HomeScreen = () => {
   return (
@@ -31,6 +34,73 @@ export const HomeScreen = () => {
         </h2>
         <button className="normal">Explore More</button>
       </section>
+
+      <section id="product1" className="section-p1">
+        <h2>New Arrivals</h2>
+        <p>Trending Sales Collection for the Stylish</p>
+        <div class="product__container">
+          {data.newArrivals.map((newArrival) => (
+            <div className="product" key={newArrival.slug}>
+              <Link to={`/product/${newArrival.slug}`}>
+                <img src={newArrival.image} alt={newArrival.name} />
+              </Link>
+              <div className="description">
+                <span>{newArrival.brand}</span>
+                <Link to={`/product/${newArrival.slug}`}>
+                  <h5>{newArrival.name}</h5>
+                </Link>
+                <div className="star">
+                  <AiFillStar className="starIcon" />
+                  <AiFillStar className="starIcon" />
+                  <AiFillStar className="starIcon" />
+                  <AiFillStar className="starIcon" />
+                  <AiFillStar className="starIcon" />
+                </div>
+                <h4>₦ {newArrival.price}</h4>
+              </div>
+
+              <Link to="/cart">
+                <PiShoppingCartBold className="cartIcon" />
+              </Link>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section id="sm-banner" className="section-p1">
+        <div className="banner__box">
+          <h4>crazy deals</h4>
+          <h2>buy 1 get 1 free</h2>
+          <span>Only classic crochets are good enough at Belly's</span>
+          <button className="white">Learn More</button>
+        </div>
+
+        <div className="banner__box banner__box2">
+          <h4>harmattan/summer</h4>
+          <h2>upcoming season</h2>
+          <span>Only classic crochets are good enough at Belly's</span>
+          <button className="white">Collection</button>
+        </div>
+      </section>
+
+      <section id="banner3">
+        <div className="banner__box">
+          <h2>baby wears & Accessories</h2>
+          <h3>Rainy Season Collection -50% OFF</h3>
+        </div>
+
+        <div className="banner__box  banner__box2">
+          <h2>new footwear collection</h2>
+          <h3>Harmattan/Summer 2022</h3>
+        </div>
+
+        <div className="banner__box banner__box3">
+          <h2>new bags</h2>
+          <h3>New Trendy Knittings</h3>
+        </div>
+      </section>
+
+      <Newsletter />
     </div>
   );
 };

@@ -9,7 +9,7 @@ export const ProductScreen = () => {
   const { slug } = params;
 
   return (
-    <main>
+    <>
       <h1>{slug}</h1>
       {/* <section id="productDetails" className="section-p1">
         {data.products.map((product) => (
@@ -100,6 +100,6 @@ export const ProductScreen = () => {
       </section>
       <FeaturedProducts products={data.products} limits={4} />
       <Newsletter />
-    </main>
+    </>
   );
 };

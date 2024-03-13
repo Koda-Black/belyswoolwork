@@ -6,8 +6,8 @@ import { HomeScreen } from "./screens/HomeScreen";
 import { ProductScreen } from "./screens/ProductScreen";
 import { Shop } from "./screens/Shop";
 import { Contact } from "./screens/Contact";
-import { About } from "./screens/About";
-import { Cart } from "./screens/Cart";
+import { AboutScreen } from "./screens/AboutScreen";
+import { CartScreen } from "./screens/CartScreen";
 import { Blog } from "./screens/Blog";
 // import { Signup } from "./screens/Signup";
 
@@ -23,8 +23,8 @@ function App() {
             <Route path="/product/:slug" element={<ProductScreen />} />
             <Route path="/shop" element={<Shop />} />
             <Route path="/contact" element={<Contact />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/cart" element={<Cart />} />
+            <Route path="/about" element={<AboutScreen />} />
+            <Route path="/cart" element={<CartScreen />} />
             <Route path="/blog" element={<Blog />} />
           </Routes>
         </main>

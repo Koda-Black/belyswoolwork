@@ -376,6 +376,24 @@ const data = {
         "The Gildan Ultra Cotton T-shirt is made from a substantial 6.0 oz. per sq. yd. fabric constructed from 100% cotton, this classic fit preshrunk jersey knit provides unmatched comfort with each wear. Featuring a taped neck and shoulder, and a seamless double-needle collar, and available in a range of colors, it offers it all in the ultimate head-turning package.",
     },
   ],
+
+  rawProductSchema: [
+    {
+      name: "Coffe Maker",
+      description: "Premium coffee machine",
+      richDescription:
+        "Make coffee like a professional barrista all day long with our premium machine",
+      image: "",
+      images: [],
+      brand: "Sony",
+      price: 200000,
+      category: "65e28a6a51a08dbef5c3891f",
+      countInStock: 25,
+      rating: 4.1,
+      numReviews: 30,
+      isFeatured: true,
+    },
+  ],
 };
 
 export default data;

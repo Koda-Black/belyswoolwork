@@ -1,9 +1,14 @@
 const mongoose = require("mongoose");
+const slugify = require("slugify");
 
 const productSchema = mongoose.Schema({
   name: {
     type: String,
     required: true,
+  },
+  slug: {
+    type: String,
+    unique: true,
   },
   description: {
     type: String,
@@ -68,6 +73,15 @@ productSchema.virtual("id").get(function () {
 
 productSchema.set("toJSON", {
   virtuals: true,
+});
+
+// Pre-save hook to generate slug from the name
+productSchema.pre("save", function (next) {
+  if (!this.isModified("name")) {
+    return next();
+  }
+  this.slug = slugify(this.name, { lower: true });
+  next();
 });
 
 exports.Product = mongoose.model("Product", productSchema);

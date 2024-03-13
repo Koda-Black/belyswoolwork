@@ -807,6 +807,12 @@ footer .copyright {
   color: var(--color-secondary);
 }
 
+.download-app {
+  font-size: 50px;
+  line-height: 64px;
+  color: #3165f5;
+}
+
 /*Contact Page*/
 
 #contact__details {
