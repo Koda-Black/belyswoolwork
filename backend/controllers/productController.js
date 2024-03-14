@@ -39,7 +39,9 @@ const getProductList = async (req, res) => {
     }
 
     const productList = await Product.find(filter)
-      .select("name image description category brand price slug")
+      .select(
+        "name image description category brand price rating numReviews slug"
+      )
       .populate("category");
 
     if (!productList || productList.length === 0) {
@@ -56,6 +58,23 @@ const getProductList = async (req, res) => {
 const getProduct = async (req, res) => {
   try {
     const product = await Product.findById(req.params.id).populate("category");
+
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    res.status(200).json({ product });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+const getProductDetails = async (req, res) => {
+  try {
+    const product = await Product.find(
+      (x) => x.slug === req.params.slug
+    ).populate("category");
 
     if (!product) {
       return res.status(404).json({ message: "Product not found" });
@@ -254,6 +273,7 @@ module.exports = {
   getProductList,
   addNewProduct,
   getProduct,
+  getProductDetails,
   updateProduct,
   deleteProduct,
   getCount,

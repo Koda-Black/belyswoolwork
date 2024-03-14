@@ -8,12 +8,16 @@ const {
   deleteProduct,
   getFeaturedProducts,
   uploadGalleryImages,
+  getProductDetails,
 } = require("../controllers/productController");
 
 const router = express.Router();
 
 // get one product
 router.get("/:id", getProduct);
+
+// get product details
+router.get("/slug/:slug", getProductDetails);
 
 // get all products
 router.get("/", getProductList);
