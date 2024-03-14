@@ -1,11 +1,12 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import { useEffect, useReducer } from "react";
+import { useState, useEffect, useReducer } from "react";
 import axios from "axios";
 
 import data from "../data";
 import FeaturedProducts from "../components/FeaturedProducts";
 import Newsletter from "../components/Newsletter";
+import { Rating } from "../components/Rating";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -23,6 +24,8 @@ const reducer = (state, action) => {
 export const ProductScreen = () => {
   const { slug } = useParams();
 
+  const [quantity, setQuantity] = useState(1);
+
   const [{ loading, error, product }, dispatch] = useReducer(reducer, {
     loading: true,
     error: "",
@@ -33,13 +36,17 @@ export const ProductScreen = () => {
       dispatch({ type: "FETCH_REQUEST" });
       try {
         const result = await axios.get(`/api/v1/products/slug/${slug}`);
-        dispatch({ type: "FETCH_SUCCESS", payload: result.data.productList });
+        dispatch({ type: "FETCH_SUCCESS", payload: result.data.product });
       } catch (err) {
         dispatch({ type: "FETCH_FAIL", payload: err.message });
       }
     };
     fetchData();
   }, [slug]);
+
+  function handleSizes(e) {
+    setQuantity(e.target.value);
+  }
 
   return (
     <>
@@ -88,9 +95,10 @@ export const ProductScreen = () => {
           </div>
 
           <div className="single__Product-details">
-            <h6>Home / T-Shirt</h6>
+            <h6>Home / {product.category.name}</h6>
             <h4>{product.name}</h4>
-            <h2>₦16,000</h2>
+            <Rating rating={product.rating} numReviews={product.numReviews} />
+            <h2>₦ {product.price}</h2>
             <select>
               <option>Select Size</option>
               <option>XL</option>
@@ -99,16 +107,17 @@ export const ProductScreen = () => {
               <option>Large</option>
               <option>XLarge</option>
             </select>
-            <input type="number" value="1" />
+            <input type="number" value={quantity} onChange={handleSizes} />
             <button className="normal">Add To Cart</button>
             <h4>Product Details</h4>
             <span>
-              The Gildan Ultra Cotton T-shirt is made from a substantial 6.0 oz.
+              {product.richDescription}
+              {/* The Gildan Ultra Cotton T-shirt is made from a substantial 6.0 oz.
               per sq. yd. fabric constructed from 100% cotton, this classNameic
               fit preshrunk jersey knit provides unmatched comfort with each
               wear. Featuring a taped neck and shoulder, and a seamless
               double-needle collar, and available in a range of colors, it
-              offers it all in the ultimate head-turning package.
+              offers it all in the ultimate head-turning package. */}
             </span>
           </div>
         </section>

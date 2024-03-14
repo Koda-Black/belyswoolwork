@@ -72,9 +72,9 @@ const getProduct = async (req, res) => {
 
 const getProductDetails = async (req, res) => {
   try {
-    const product = await Product.find(
-      (x) => x.slug === req.params.slug
-    ).populate("category");
+    const product = await Product.findOne({ slug: req.params.slug }).populate(
+      "category"
+    );
 
     if (!product) {
       return res.status(404).json({ message: "Product not found" });
