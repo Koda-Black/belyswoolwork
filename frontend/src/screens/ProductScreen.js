@@ -1,12 +1,17 @@
 import React from "react";
-import { useParams } from "react-router-dom";
-import { useState, useEffect, useReducer } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useState, useEffect, useReducer, useContext } from "react";
 import axios from "axios";
+import { Helmet } from "react-helmet-async";
 
 import data from "../data";
-import FeaturedProducts from "../components/FeaturedProducts";
 import Newsletter from "../components/Newsletter";
 import { Rating } from "../components/Rating";
+import LoadingBox from "../components/LoadingBox";
+import MessageBox from "./MessageBox";
+import { getError } from "../utils";
+import { Store } from "../Store";
+import Product from "../components/Product";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -22,6 +27,7 @@ const reducer = (state, action) => {
 };
 
 export const ProductScreen = () => {
+  const navigate = useNavigate();
   const { slug } = useParams();
 
   const [quantity, setQuantity] = useState(1);
@@ -38,7 +44,7 @@ export const ProductScreen = () => {
         const result = await axios.get(`/api/v1/products/slug/${slug}`);
         dispatch({ type: "FETCH_SUCCESS", payload: result.data.product });
       } catch (err) {
-        dispatch({ type: "FETCH_FAIL", payload: err.message });
+        dispatch({ type: "FETCH_FAIL", payload: getError(err) });
       }
     };
     fetchData();
@@ -48,12 +54,31 @@ export const ProductScreen = () => {
     setQuantity(e.target.value);
   }
 
+  const { state, dispatch: ctxDispatch } = useContext(Store);
+  const { cart } = state;
+  const addToCartHandler = async () => {
+    const existItem = cart.cartItems.find((x) => x.id === product.id);
+    const quantity = existItem ? existItem.quantity + 1 : 1;
+    const { data } = await axios.get(`/api/v1/products/${product.id}`);
+    if (data.countInStock < quantity) {
+      window.alert("Sorry. Product is out of stock");
+      return;
+    }
+    ctxDispatch({
+      type: "CART_ADD_ITEM",
+      payload: { ...product, quantity },
+    });
+    navigate("/cart");
+  };
+
   return (
     <>
       {loading ? (
-        <div>Loading...</div>
+        <div>
+          <LoadingBox />
+        </div>
       ) : error ? (
-        <div>{error}</div>
+        <MessageBox>{error}</MessageBox>
       ) : (
         <section id="productDetails" className="section-p1">
           <div className="single-pro-img">
@@ -95,7 +120,15 @@ export const ProductScreen = () => {
           </div>
 
           <div className="single__Product-details">
+            {product.countInStock > 0 ? (
+              <div className="productBadge success">In Stock</div>
+            ) : (
+              <div className="productBadge failure">Out of Stock</div>
+            )}
             <h6>Home / {product.category.name}</h6>
+            <Helmet>
+              <title>{product.name}</title>
+            </Helmet>
             <h4>{product.name}</h4>
             <Rating rating={product.rating} numReviews={product.numReviews} />
             <h2>₦ {product.price}</h2>
@@ -108,7 +141,9 @@ export const ProductScreen = () => {
               <option>XLarge</option>
             </select>
             <input type="number" value={quantity} onChange={handleSizes} />
-            <button className="normal">Add To Cart</button>
+            <button className="normal" onClick={addToCartHandler}>
+              Add To Cart
+            </button>
             <h4>Product Details</h4>
             <span>
               {product.richDescription}
@@ -122,7 +157,11 @@ export const ProductScreen = () => {
           </div>
         </section>
       )}
-      <FeaturedProducts products={data.products} limits={4} />
+      <section id="product1" className="section-p1">
+        <h2>Featured Products</h2>
+        <p>Trending Sales Collection for the Stylish</p>
+        <Product products={data.products} limits={4} />
+      </section>
       <Newsletter />
     </>
   );

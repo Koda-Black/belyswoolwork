@@ -40,7 +40,7 @@ const getProductList = async (req, res) => {
 
     const productList = await Product.find(filter)
       .select(
-        "name image description category brand price rating numReviews slug"
+        "name image description category brand price rating numReviews countInStock slug"
       )
       .populate("category");
 

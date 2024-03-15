@@ -149,6 +149,133 @@ body {
   font-size: 1.5rem;
 }
 
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-left-color: #333;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.alert-box {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #f8d7da;
+  padding: 25px;
+  border-radius: 5px;
+  border: 1px solid #f5c6cb;
+  z-index: 9999;
+}
+
+.error-message {
+  margin: 0;
+}
+
+.cart-count {
+  border-radius: 100%;
+  background-color: #ec1a2e;
+  color: #fff;
+  padding: 2.5px 5px;
+  margin: -5px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.error-message {
+  margin: 0;
+}
+
+.cart-contronl-btn {
+  padding: 7px;
+  outline: none;
+  border: none !important;
+}
+
+.cart-contronl-btn:hover {
+  --color-primary: #e3e6f3;
+}
+
+/* auth forms */
+form.signup,
+form.login {
+  max-width: 400px;
+  margin: 7rem auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.formTitle {
+  font-size: 35px;
+  padding: 15px 0 30px;
+  font-weight: 500;
+}
+
+form button {
+  background: var(--color-secondary);
+  border: 0;
+  color: #fff;
+  padding: 12px 20px;
+  font-family: "Poppins", sans-serif;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  margin: 0 0 15px;
+}
+
+form button:hover {
+  background: #cdebbc;
+  color: #000;
+}
+
+form.login label,
+form.signup label {
+  display: block;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+form.login input,
+form.signup input {
+  padding: 12px;
+  margin-top: 8px;
+  margin-bottom: 20px;
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-sizing: border-box;
+  font-size: 16px;
+}
+
+form.login input[type="email"],
+form.login input[type="password"],
+form.signup input[type="email"],
+form.signup input[type="password"] {
+  font-family: "Poppins", sans-serif;
+}
+
+form.login button,
+form.signup button {
+  font-size: 16px;
+}
+
 #navbar,
 #bar {
   font-size: 20px;
@@ -299,13 +426,29 @@ body {
   padding: 10px 0;
 }
 
+.productBadge {
+  font-size: 12px;
+  font-weight: 600;
+  color: #ffff;
+  background-color: #0a6943;
+  padding: 5px;
+  border-radius: 4px;
+  width: 20%;
+  text-align: center;
+  margin: 15px 0;
+}
+
+.failure {
+  color: #ffff;
+  background-color: #ff5353;
+}
+
 #product1 .product .description span {
   color: #606063;
   font-size: 12px;
 }
 
-#product1 .product .description h5,
-a {
+#product1 .product .description h5 a {
   padding: 7px 0 2px 0;
   color: #1a1a1a;
   font-size: 14px;
@@ -649,7 +792,7 @@ footer .copyright {
 
 #productDetails .single__Product-details {
   width: 50%;
-  padding-top: 30px;
+  /* padding-top: 30px; */
 }
 
 #productDetails .single__Product-details h4 {

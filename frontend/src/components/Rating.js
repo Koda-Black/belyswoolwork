@@ -1,5 +1,4 @@
 import React from "react";
-// import { AiFillStar } from "react-icons/ai";
 import { FaStarHalfAlt } from "react-icons/fa";
 import { FaStar } from "react-icons/fa";
 import { FaRegStar } from "react-icons/fa";

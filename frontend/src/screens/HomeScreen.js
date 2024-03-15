@@ -3,12 +3,16 @@ import data from "../data";
 
 import { PiShoppingCartBold } from "react-icons/pi";
 import { AiFillStar } from "react-icons/ai";
-import FeaturedProducts from "../components/FeaturedProducts";
+import Product from "../components/Product";
 import Newsletter from "../components/Newsletter";
+import { Helmet } from "react-helmet-async";
 
 export const HomeScreen = () => {
   return (
     <div>
+      <Helmet>
+        <title>Belyswoolwork | Home</title>
+      </Helmet>
       <section id="hero">
         <h4>Trade-in-offer</h4>
         <h2>Super value deals</h2>
@@ -26,7 +30,11 @@ export const HomeScreen = () => {
           </div>
         ))}
       </section>
-      <FeaturedProducts />
+      <section id="product1" className="section-p1">
+        <h2>Featured Products</h2>
+        <p>Summer Collection Top Design</p>
+        <Product />
+      </section>
       <section id="banner" className="section-m1">
         <h4>Trending wool pieces</h4>
         <h2>

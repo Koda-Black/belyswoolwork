@@ -2,6 +2,8 @@ import { Link } from "react-router-dom";
 import { IoBagHandleOutline } from "react-icons/io5";
 import { AiOutlineClose } from "react-icons/ai";
 import { RiMenu3Fill } from "react-icons/ri";
+import { useContext } from "react";
+import { Store } from "../Store";
 
 const Navbar = () => {
   //   const { logout } = useLogout();
@@ -10,6 +12,9 @@ const Navbar = () => {
   //   const handleClick = () => {
   //     logout();
   //   };
+
+  const { state } = useContext(Store);
+  const { cart } = state;
 
   return (
     <header id="header">
@@ -38,6 +43,11 @@ const Navbar = () => {
           <li>
             <Link to="/cart">
               <IoBagHandleOutline id="lg-bag" style={{ fontSize: 20 }} />
+              {cart.cartItems.length > 0 && (
+                <span className="cart-count">
+                  {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
+                </span>
+              )}
             </Link>
           </li>
 
@@ -62,6 +72,12 @@ const Navbar = () => {
       <div id="mobile">
         <Link to="/cart" className="mobile-cart">
           <IoBagHandleOutline />
+          {cart.cartItems.length > 0 && (
+            <span className="cart-count">
+              {" "}
+              {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
+            </span>
+          )}
         </Link>
         <RiMenu3Fill id="bar" />
       </div>

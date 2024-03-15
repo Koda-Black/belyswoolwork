@@ -1,11 +1,51 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { AiOutlineCloseCircle } from "react-icons/ai";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useContext } from "react";
+import { Store } from "../Store";
+import { FaTrash } from "react-icons/fa6";
+import { Helmet } from "react-helmet-async";
+import MessageBox from "./MessageBox";
+import { FaMinusCircle } from "react-icons/fa";
+import { BsFillPlusCircleFill } from "react-icons/bs";
 
 export const CartScreen = () => {
+  const navigate = useNavigate();
+  const { state, dispatch: ctxDispatch } = useContext(Store);
+  const {
+    cart: { cartItems },
+  } = state;
+
+  const updateCartHandler = async (item, quantity) => {
+    const { data } = await axios.get(`/api/v1/products/${item.id}`);
+
+    if (data.countInStock < quantity) {
+      window.alert("Sorry. Product is out of stock");
+      return;
+    }
+    ctxDispatch({
+      type: "CART_ADD_ITEM",
+      payload: { ...item, quantity },
+    });
+  };
+
+  const removeItemHandler = (item) => {
+    ctxDispatch({
+      type: "CART_REMOVE_ITEM",
+      payload: item,
+    });
+  };
+
+  const checkoutHandler = () => {
+    navigate("/signup?redirect=/shipping");
+  };
+
   return (
     <>
       <section id="page__header" className="about__header">
+        <Helmet>
+          <title>Shopping Cart</title>
+        </Helmet>
         <h2>#cart</h2>
         <p>Add your coupon code & SAVE up to 70%!</p>
       </section>
@@ -19,60 +59,57 @@ export const CartScreen = () => {
               <td>Product</td>
               <td>Price</td>
               <td>Quantity</td>
-              <td>Subtotal</td>
+              {/* <td>Subtotal</td> */}
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>
-                <Link to="/">
-                  <AiOutlineCloseCircle />
-                </Link>
-              </td>
-              <td>
-                <img src="/images/products/f1.jpg" alt="" />
-              </td>
-              <td>Cartoon Astronaut T-Shirts</td>
-              <td>₦16,000</td>
-              <td>
-                <input type="number" value="1" />
-              </td>
-              <td>₦16,000</td>
-            </tr>
+            {cartItems.length === 0 ? (
+              <MessageBox>
+                Cart is empty! <Link to="/">Go Shopping</Link>
+              </MessageBox>
+            ) : (
+              cartItems.map((item) => (
+                <tr key={item.id}>
+                  <td>
+                    <Link to="/">
+                      <FaTrash
+                        onClick={() => removeItemHandler(item)}
+                        style={{ color: "black" }}
+                      />
+                    </Link>
+                  </td>
+                  <td>
+                    <Link to={`/product/${item.slug}`}>
+                      <img src={item.image} alt={item.name} />
+                    </Link>
+                  </td>
+                  <td>
+                    <Link to={`/product/${item.slug}`}>{item.name}</Link>
+                  </td>
+                  <td>₦ {item.price}</td>
+                  <td>
+                    <button
+                      className="cart-contronl-btn"
+                      onClick={() => updateCartHandler(item, item.quantity - 1)}
+                      disabled={item.quantity === 1}
+                    >
+                      <FaMinusCircle />
+                    </button>
+                    {/* <input type="number" value="1" /> */}
+                    <span> {item.quantity} </span>
 
-            <tr>
-              <td>
-                <Link to="/">
-                  <AiOutlineCloseCircle />
-                </Link>
-              </td>
-              <td>
-                <img src="/images/products/f2.jpg" alt="" />
-              </td>
-              <td>Cartoon Astronaut T-Shirts</td>
-              <td>₦16,000</td>
-              <td>
-                <input type="number" value="1" />
-              </td>
-              <td>₦16,000</td>
-            </tr>
-
-            <tr>
-              <td>
-                <Link to="/">
-                  <AiOutlineCloseCircle />
-                </Link>
-              </td>
-              <td>
-                <img src="/images/products/f3.jpg" alt="" />
-              </td>
-              <td>Cartoon Astronaut T-Shirts</td>
-              <td>₦16,000</td>
-              <td>
-                <input type="number" value="1" />
-              </td>
-              <td>₦16,000</td>
-            </tr>
+                    <button
+                      className="cart-contronl-btn"
+                      onClick={() => updateCartHandler(item, item.quantity + 1)}
+                      disabled={item.quantity === item.countInStock}
+                    >
+                      <BsFillPlusCircleFill />
+                    </button>
+                  </td>
+                  {/* <td>₦ {item.price * item.quantity}</td> */}
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </section>
@@ -91,7 +128,10 @@ export const CartScreen = () => {
           <table>
             <tr>
               <td>Cart Subtotals</td>
-              <td>₦48,000.00</td>
+              <td>
+                ({cartItems.reduce((a, c) => a + c.quantity, 0)} items : ₦{" "}
+                {cartItems.reduce((a, c) => a + c.price * c.quantity, 0)})
+              </td>
             </tr>
             <tr>
               <td>Shipping</td>
@@ -102,11 +142,19 @@ export const CartScreen = () => {
                 <strong>Total</strong>
               </td>
               <td>
-                <strong>₦48,000.00</strong>
+                <strong>
+                  ₦ {cartItems.reduce((a, c) => a + c.price * c.quantity, 0)}
+                </strong>
               </td>
             </tr>
           </table>
-          <button className="normal">Proceed to checkout</button>
+          <button
+            className="normal"
+            disabled={cartItems.length === 0}
+            onClick={() => checkoutHandler()}
+          >
+            Proceed to checkout
+          </button>
         </div>
       </section>
     </>
