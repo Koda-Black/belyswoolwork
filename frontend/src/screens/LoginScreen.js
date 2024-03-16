@@ -1,8 +1,13 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Store } from "../Store";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { getError } from "../utils";
 
 const LoginScreen = () => {
+  const navigate = useNavigate();
   const { search } = useLocation();
   const redirectUrl = new URLSearchParams(search).get("redirect");
   const redirect = redirectUrl ? redirectUrl : "/";
@@ -10,14 +15,33 @@ const LoginScreen = () => {
   const [password, setPassword] = useState("");
   //   const { login, error, isLoading } = useLogin();
 
-  const handleSubmit = async (e) => {
+  const { state, dispatch: ctxDispatch } = useContext(Store);
+  const { userInfo } = state;
+
+  const submitHandler = async (e) => {
     e.preventDefault();
 
-    // await login(email, password);
+    try {
+      const { data } = await axios.post("/api/v1/users/login", {
+        email,
+        password,
+      });
+      ctxDispatch({ type: "USER_LOGIN", payload: data });
+      localStorage.setItem("userInfo", JSON.stringify(data));
+      navigate(redirect || "/");
+    } catch (err) {
+      toast.error(getError(err));
+    }
   };
 
+  useEffect(() => {
+    if (userInfo) {
+      navigate(redirect);
+    }
+  }, [navigate, redirect, userInfo]);
+
   return (
-    <form className="login" onSubmit={handleSubmit}>
+    <form className="login" onSubmit={submitHandler}>
       <Helmet>
         <title>Log in</title>
       </Helmet>
@@ -37,7 +61,9 @@ const LoginScreen = () => {
         value={password}
       />
 
-      <button>Log in</button>
+      <button type="submit" className="normal">
+        Log in
+      </button>
 
       <div>
         New customer?{" "}

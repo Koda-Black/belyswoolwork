@@ -4,25 +4,34 @@ const jwt = require("jsonwebtoken");
 const { User } = require("../models/userModel");
 
 const signup = async (req, res) => {
+  const secret = process.env.SECRET;
   try {
-    let user = new User({
+    const user = new User({
       name: req.body.name,
       email: req.body.email,
-      passwordHash: bcrypt.hashSync(req.body.password, 10),
+      passwordHash: await bcrypt.hash(req.body.password, 10), // Asynchronous hashing
       phone: req.body.phone,
-      isAdmin: req.body.isAdmin,
+      isAdmin: req.body.isAdmin || false, // Default to false if not provided
       apartment: req.body.apartment,
       zip: req.body.zip,
       city: req.body.city,
       country: req.body.country,
     });
-    // console.log("User: ", user);
 
-    user = await user.save();
+    const savedUser = await user.save();
+
+    const token = jwt.sign(
+      {
+        userId: savedUser.id,
+        isAdmin: savedUser.isAdmin,
+      },
+      secret,
+      { expiresIn: "1d" }
+    );
 
     res.status(201).json({
-      message: "New user created successfully",
-      user,
+      user: { name: savedUser.name.split(" ")[0], email: savedUser.email },
+      token: token,
     });
   } catch (error) {
     console.error(error);
@@ -50,7 +59,7 @@ const login = async (req, res) => {
       );
       return res.status(200).json({
         message: "User Authenticated!",
-        user: user.email,
+        user: { name: user.name.split(" ")[0], email: user.email },
         token: token,
       });
     } else {

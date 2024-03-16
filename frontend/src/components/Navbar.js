@@ -1,4 +1,6 @@
 import { Link } from "react-router-dom";
+import NavDropdown from "react-bootstrap/NavDropdown";
+import { LinkContainer } from "react-router-bootstrap";
 import { IoBagHandleOutline } from "react-icons/io5";
 import { AiOutlineClose } from "react-icons/ai";
 import { RiMenu3Fill } from "react-icons/ri";
@@ -6,15 +8,14 @@ import { useContext } from "react";
 import { Store } from "../Store";
 
 const Navbar = () => {
-  //   const { logout } = useLogout();
-  //   const { user } = useAuthContext();
+  const { state, dispatch: ctxDispatch } = useContext(Store);
+  const { cart, userInfo } = state;
 
-  //   const handleClick = () => {
-  //     logout();
-  //   };
-
-  const { state } = useContext(Store);
-  const { cart } = state;
+  const signoutHandler = () => {
+    ctxDispatch({ type: "USER_SIGNOUT" });
+    localStorage.removeItem("userInfo");
+    localStorage.removeItem("shippingAddress");
+  };
 
   return (
     <header id="header">
@@ -31,13 +32,31 @@ const Navbar = () => {
           <li>
             <Link to="/shop">Shop</Link>
           </li>
-
-          <li>
-            <Link to="/blog">Blog</Link>
-          </li>
-
           <li>
             <Link to="/about">About</Link>
+          </li>
+
+          <li className="user-profile">
+            {userInfo ? (
+              <NavDropdown title={userInfo.user.name} id="basic-nav-dropdown">
+                <LinkContainer to="/profile">
+                  <NavDropdown.Item>User Profile</NavDropdown.Item>
+                </LinkContainer>
+                <LinkContainer to="/orderhistory">
+                  <NavDropdown.Item>Order History</NavDropdown.Item>
+                </LinkContainer>
+                <NavDropdown.Divider />
+                <Link
+                  className="dropdown-item"
+                  to="#signout"
+                  onClick={signoutHandler}
+                >
+                  Sign Out
+                </Link>
+              </NavDropdown>
+            ) : (
+              <Link to="/login">Login</Link>
+            )}
           </li>
 
           <li>
@@ -55,18 +74,6 @@ const Navbar = () => {
             <AiOutlineClose />
           </div>
         </ul>
-        {/* {user && (
-            <div>
-              <span>{user.email}</span>
-              <button onClick={handleClick}>Log out</button>
-            </div>
-          )}
-          {!user && (
-            <div className="">
-              <Link to="/login">Login</Link>
-              <Link to="/signup">Sign up</Link>
-            </div>
-          )} */}
       </nav>
 
       <div id="mobile">

@@ -80,7 +80,11 @@ const Product = (props) => {
         productList.slice(0, limits).map((product) => (
           <div className="product" key={product.slug}>
             <Link to={`/product/${product.slug}`}>
-              <img src={product.image} alt={product.name} />
+              <img
+                src={`http://localhost:5202/public/uploads/${product.image}`}
+                // src={product.image}
+                alt={product.name}
+              />
             </Link>
             <div className="description">
               <span>{product.brand}</span>
@@ -91,7 +95,7 @@ const Product = (props) => {
               <h4>₦ {product.price}</h4>
             </div>
 
-            <Link to="/cart">
+            <Link to="/">
               <PiShoppingCartBold
                 className="cartIcon"
                 onClick={() => addToCartHandler(product)}

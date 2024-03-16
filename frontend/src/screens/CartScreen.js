@@ -71,7 +71,7 @@ export const CartScreen = () => {
               cartItems.map((item) => (
                 <tr key={item.id}>
                   <td>
-                    <Link to="/">
+                    <Link to="/cart">
                       <FaTrash
                         onClick={() => removeItemHandler(item)}
                         style={{ color: "black" }}
@@ -80,7 +80,10 @@ export const CartScreen = () => {
                   </td>
                   <td>
                     <Link to={`/product/${item.slug}`}>
-                      <img src={item.image} alt={item.name} />
+                      <img
+                        src={`http://localhost:5202/public/uploads/${item.image}`}
+                        alt={item.name}
+                      />
                     </Link>
                   </td>
                   <td>

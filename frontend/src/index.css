@@ -11,6 +11,7 @@
   --color-primary: #e3e6f3;
   --box-shadow-primary: 0 5px 15px rgba(0, 0, 0, 0.06);
   --color-secondary: #088178;
+  --color-secondary-hover: #02b8ab;
 }
 
 h1 {
@@ -134,7 +135,7 @@ body {
   color: var(--color-secondary);
 }
 
-#navbar li a.active::after,
+/* #navbar li a.active::after,
 #navbar li a:hover::after {
   content: "";
   width: 30%;
@@ -143,6 +144,23 @@ body {
   position: absolute;
   bottom: -4px;
   left: 20px;
+} */
+
+#navbar .user-profile a {
+  text-decoration: none !important; /* Remove underline */
+  color: #1a1a1a; /* Set default color */
+}
+
+#navbar .user-profile a:hover {
+  color: var(--color-secondary); /* Change color on hover */
+}
+
+#navbar .user-profile a.active {
+  text-decoration: none !important; /* Remove underline for active links */
+}
+
+#navbar .user-profile a.active::after {
+  display: none; /* Hide the underline for active links */
 }
 
 .logo {
@@ -227,21 +245,16 @@ form.login {
   font-weight: 500;
 }
 
-form button {
-  background: var(--color-secondary);
-  border: 0;
-  color: #fff;
-  padding: 12px 20px;
-  font-family: "Poppins", sans-serif;
-  border-radius: 8px;
+form button.normal {
   cursor: pointer;
-  transition: background 0.3s ease;
-  margin: 0 0 15px;
+  background: var(--color-secondary);
+  color: #fff;
+  padding: 12px 24px;
+  margin-bottom: 15px;
 }
 
-form button:hover {
-  background: #cdebbc;
-  color: #000;
+form button.normal:hover {
+  background: var(--color-secondary-hover);
 }
 
 form.login label,
@@ -448,8 +461,8 @@ form.signup button {
   font-size: 12px;
 }
 
-#product1 .product .description h5 a {
-  padding: 7px 0 2px 0;
+#product1 .product .description h5 {
+  padding: 7px 0 4px 0;
   color: #1a1a1a;
   font-size: 14px;
   text-decoration: none;
@@ -1459,4 +1472,14 @@ footer .copyright {
     width: 100%;
     padding: 20px;
   }
+}
+
+.checkout-steps {
+  border-bottom: 0.2rem solid #a0a0a0;
+  color: #a0a0a0;
+}
+
+.checkout-steps > div.active {
+  border-bottom: 0.2rem solid #f08000;
+  color: #f08800;
 }

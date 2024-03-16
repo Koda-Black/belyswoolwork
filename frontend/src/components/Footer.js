@@ -48,8 +48,8 @@ const Footer = () => {
 
       <div className="col">
         <h4>My Account</h4>
-        <Link to="/">Sign In</Link>
-        <Link to="/">View Cart</Link>
+        <Link to={`/login`}>Sign In</Link>
+        <Link to="/cart">View Cart</Link>
         <Link to="/">My Wishlist</Link>
         <Link to="/">Track My Order</Link>
         <Link to="/">Help</Link>
