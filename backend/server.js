@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
 const cors = require("cors");
-const authJwt = require("./middlewares/jwt.js");
+const { authJwt } = require("./middlewares/jwt.js");
 const productRouter = require("./routes/productRoutes.js");
 const userRouter = require("./routes/userRoutes.js");
 const ordersRouter = require("./routes/ordersRoutes");
@@ -23,7 +23,7 @@ app.use(express.json());
 // });
 app.use(bodyParser.json());
 app.use(morgan("tiny"));
-app.use(authJwt());
+// app.use(authJwt());
 app.use("/public/uploads", express.static(__dirname + "/public/uploads"));
 app.use(errorHandler);
 

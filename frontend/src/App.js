@@ -14,6 +14,8 @@ import { Blog } from "./screens/Blog";
 import LoginScreen from "./screens/LoginScreen";
 import SignupScreen from "./screens/SignupScreen";
 import ShippingScreen from "./screens/ShippingScreen";
+import PaymentMethodScreen from "./screens/PaymentMethodScreen";
+import PlaceOrderScreen from "./screens/PlaceOrderScreen";
 
 function App() {
   return (
@@ -28,8 +30,10 @@ function App() {
             <Route path="/product/:slug" element={<ProductScreen />} />
             <Route path="/cart" element={<CartScreen />} />
             <Route path="/login" element={<LoginScreen />} />
-            <Route path="/shipping" element={<ShippingScreen />} />
             <Route path="/signup" element={<SignupScreen />} />
+            <Route path="/shipping" element={<ShippingScreen />} />
+            <Route path="/payment" element={<PaymentMethodScreen />} />
+            <Route path="/placeorder" element={<PlaceOrderScreen />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/about" element={<AboutScreen />} />
             <Route path="/blog" element={<Blog />} />

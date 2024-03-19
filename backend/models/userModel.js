@@ -5,41 +5,22 @@ const userSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  phone: {
-    type: String,
-  },
   email: {
     type: String,
     required: true,
     unique: true,
   },
-  passwordHash: {
+  password: {
     type: String,
     required: true,
   },
-  street: {
+  resetToken: {
     type: String,
-    default: "",
-  },
-  apartment: {
-    type: String,
-    default: "",
-  },
-  city: {
-    type: String,
-    default: "",
-  },
-  zip: {
-    type: String,
-    default: "",
-  },
-  country: {
-    type: String,
-    default: "",
   },
   isAdmin: {
     type: Boolean,
     default: false,
+    required: true,
   },
 });
 

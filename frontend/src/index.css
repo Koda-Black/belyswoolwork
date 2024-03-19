@@ -1475,11 +1475,15 @@ footer .copyright {
 }
 
 .checkout-steps {
-  border-bottom: 0.2rem solid #a0a0a0;
+  border-bottom: 0.17rem solid #a0a0a0;
   color: #a0a0a0;
 }
 
 .checkout-steps > div.active {
   border-bottom: 0.2rem solid #f08000;
   color: #f08800;
+}
+
+.small-container {
+  margin: 4rem 0;
 }

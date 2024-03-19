@@ -7,6 +7,7 @@ const {
   getCount,
   deleteUser,
 } = require("../controllers/userController");
+const { isAuth } = require("../middlewares/jwt");
 
 const router = express.Router();
 

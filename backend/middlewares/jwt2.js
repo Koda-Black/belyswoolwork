@@ -1,34 +1,4 @@
 const jwt = require("jsonwebtoken");
-const expressJwt = require("express-jwt");
-const bcrypt = require("bcrypt");
-
-const authJwt = () => {
-  const secret = process.env.SECRET;
-
-  const isRevoked = async (req, payload, done) => {
-    if (!payload.isAdmin) {
-      done(null, true);
-    }
-
-    done();
-  };
-
-  return expressJwt({
-    secret,
-    algorithms: ["HS256"],
-    isRevoked: isRevoked,
-  }).unless({
-    path: [
-      { url: /\/public\/uploads(.*)/, methods: ["GET", "OPTIONS"] },
-      { url: /\/api\/v1\/products(.*)/, methods: ["GET", "OPTIONS"] },
-      { url: /\/api\/v1\/categories(.*)/, methods: ["GET", "OPTIONS"] },
-      // { url: /\/api\/v1\/orders(.*)/, methods: ["GET", "OPTIONS"] },
-
-      "/api/v1/users/login",
-      "/api/v1/users/signup",
-    ],
-  });
-};
 
 const generateToken = (user) => {
   const secret = process.env.SECRET;
@@ -95,7 +65,6 @@ const payOrderEmailTemplate = (order) => {
 };
 
 module.exports = {
-  authJwt,
   generateToken,
   isAuth,
   isAdmin,

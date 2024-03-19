@@ -2,36 +2,27 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { User } = require("../models/userModel");
+const { generateToken } = require("../middlewares/jwt2");
 
 const signup = async (req, res) => {
-  const secret = process.env.SECRET;
   try {
-    const user = new User({
+    const newUser = new User({
       name: req.body.name,
       email: req.body.email,
-      passwordHash: await bcrypt.hash(req.body.password, 10), // Asynchronous hashing
-      phone: req.body.phone,
-      isAdmin: req.body.isAdmin || false, // Default to false if not provided
-      apartment: req.body.apartment,
-      zip: req.body.zip,
-      city: req.body.city,
-      country: req.body.country,
+      password: await bcrypt.hash(req.body.password, 10), // Asynchronous hashing
+      // isAdmin: req.body.isAdmin || false, // Default to false if not provided
     });
 
-    const savedUser = await user.save();
-
-    const token = jwt.sign(
-      {
-        userId: savedUser.id,
-        isAdmin: savedUser.isAdmin,
-      },
-      secret,
-      { expiresIn: "1d" }
-    );
+    const user = await newUser.save();
 
     res.status(201).json({
-      user: { name: savedUser.name.split(" ")[0], email: savedUser.email },
-      token: token,
+      user: {
+        id: user.id,
+        name: user.name.split(" ")[0],
+        email: user.email,
+        isAdmin: user.isAdmin,
+        token: generateToken(user),
+      },
     });
   } catch (error) {
     console.error(error);
@@ -42,25 +33,21 @@ const signup = async (req, res) => {
 const login = async (req, res) => {
   try {
     const user = await User.findOne({ email: req.body.email });
-    const secret = process.env.SECRET;
 
     if (!user) {
       return res.status(400).json({ message: "User not found" });
     }
 
-    if (user && bcrypt.compareSync(req.body.password, user.passwordHash)) {
-      const token = jwt.sign(
-        {
-          userId: user.id,
-          isAdmin: user.isAdmin,
-        },
-        secret,
-        { expiresIn: "1d" }
-      );
+    if (user && bcrypt.compareSync(req.body.password, user.password)) {
       return res.status(200).json({
         message: "User Authenticated!",
-        user: { name: user.name.split(" ")[0], email: user.email },
-        token: token,
+        user: {
+          id: user.id,
+          name: user.name.split(" ")[0],
+          email: user.email,
+          isAdmin: user.isAdmin,
+          token: generateToken(user),
+        },
       });
     } else {
       return res

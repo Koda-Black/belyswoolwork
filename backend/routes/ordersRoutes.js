@@ -1,5 +1,12 @@
 const express = require("express");
 const {
+  isAuth,
+  isAdmin,
+  mailgun,
+  payOrderEmailTemplate,
+} = require("../middlewares/jwt2.js");
+
+const {
   createOrder,
   getOrderList,
   getOrder,
@@ -9,16 +16,17 @@ const {
   getCount,
   getUserOrderHistory,
 } = require("../controllers/ordersController");
+
 const router = express.Router();
 
 // create new order
-router.post("/", createOrder);
+router.post("/", isAuth, createOrder);
 
 // get one order
 router.get("/:id", getOrder);
 
 // get all orders
-router.get("/", getOrderList);
+router.get("/", isAuth, isAdmin, getOrderList);
 
 // get total sales
 router.get("/get/totalsales", getTotalSales);
