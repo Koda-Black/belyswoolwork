@@ -63,21 +63,13 @@ const getCount = async (req, res) => {
 
 const getOrder = async (req, res) => {
   try {
-    const order = await Order.findById(req.params.id)
-      .populate("user", "name")
-      .populate({
-        path: "orderItems",
-        populate: {
-          path: "product",
-          populate: "category",
-        },
-      });
+    const order = await Order.findById(req.params.id);
 
     if (!order) {
       return res.status(404).json({ message: "Could not find order" });
     }
 
-    res.status(200).json({ order });
+    res.status(200).send(order);
   } catch (error) {
     res.status(500).json({ message: "Internal server erorr" });
   }
