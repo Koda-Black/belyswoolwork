@@ -7,11 +7,13 @@ import ListGroup from "react-bootstrap/ListGroup";
 import Card from "react-bootstrap/Card";
 import { Link } from "react-router-dom";
 import LoadingBox from "../components/LoadingBox";
-import MessageBox from "./MessageBox";
+import MessageBox from "../components/MessageBox";
+import Button from "react-bootstrap/Button";
 import { Store } from "../Store";
 import { useNavigate, useParams } from "react-router-dom";
 import { getError } from "../utils";
 import { Helmet } from "react-helmet-async";
+import { loadStripe } from "@stripe/stripe-js";
 
 function reducer(state, action) {
   switch (action.type) {
@@ -65,6 +67,60 @@ export default function OrderScreen() {
       fetchOrder();
     }
   }, [order, userInfo, orderId, navigate]);
+
+  const handleStripePayment = async () => {
+    const apiURL = "/api/v1/orders"; // Initialize useNavigate hook
+    const stripe = await loadStripe(
+      "pk_test_51OwXukB9RrPApwN7z0mMopeph1kVUi6hsejateWYMSdcgtKSwkojQQZHO9Z4o98Gsnfkp20S0r1akoJdlQ4joOZI00oglnPQTN"
+    );
+
+    const body = {
+      products: order.orderItems,
+    };
+
+    const headers = {
+      "Content-Type": "application/json",
+    };
+
+    try {
+      const response = await fetch(`${apiURL}/create-checkout-session`, {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify(body),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to create checkout session");
+      }
+
+      const session = await response.json();
+
+      const result = stripe.redirectToCheckout({
+        sessionId: session.id,
+      });
+
+      if (result.error) {
+        console.log(result.error);
+      } else {
+        // Redirect to a new route without the /order prefix
+        navigate("/api/v1/orders/create-checkout-session");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  const handlePaystackPayment = async () => {};
+
+  const makePayment = async () => {
+    if (order.paymentMethod === "Stripe") {
+      await handleStripePayment();
+    } else if (order.paymentMethod === "Paystack") {
+      await handlePaystackPayment();
+    } else {
+      console.error("Unsupported payment method:", order.paymentMethod);
+    }
+  };
 
   return loading ? (
     <LoadingBox></LoadingBox>
@@ -167,9 +223,18 @@ export default function OrderScreen() {
                 <ListGroup.Item>
                   <Row>
                     <Col>Order Total</Col>
-                    <strong>
-                      <Col>₦ {order.totalPrice?.toFixed(2)}</Col>
-                    </strong>
+                    <Button
+                      onClick={makePayment}
+                      className={`btn ${
+                        order.totalPrice === 0 ? "btn-secondary" : "btn-success"
+                      }`}
+                      type="button"
+                    >
+                      Pay ₦{" "}
+                      {order.totalPrice === 0
+                        ? "0"
+                        : order.totalPrice.toFixed(2)}
+                    </Button>
                   </Row>
                 </ListGroup.Item>
               </ListGroup>

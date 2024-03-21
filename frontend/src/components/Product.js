@@ -6,8 +6,9 @@ import { Link } from "react-router-dom";
 import { PiShoppingCartBold } from "react-icons/pi";
 import { Rating } from "./Rating";
 import LoadingBox from "./LoadingBox";
-import MessageBox from "../screens/MessageBox";
+import MessageBox from "./MessageBox";
 import { getError } from "../utils";
+import { toast } from "react-toastify";
 import { Store } from "../Store";
 
 const reducer = (state, action) => {
@@ -45,6 +46,7 @@ const Product = (props) => {
       type: "CART_ADD_ITEM",
       payload: { ...item, quantity },
     });
+    toast.success("Item Added To Cart Successfully");
   };
 
   const [{ loading, error, productList }, dispatch] = useReducer(

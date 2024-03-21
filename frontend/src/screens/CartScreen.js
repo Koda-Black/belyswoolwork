@@ -5,7 +5,7 @@ import { useContext } from "react";
 import { Store } from "../Store";
 import { FaTrash } from "react-icons/fa6";
 import { Helmet } from "react-helmet-async";
-import MessageBox from "./MessageBox";
+import MessageBox from "../components/MessageBox";
 import { FaMinusCircle } from "react-icons/fa";
 import { BsFillPlusCircleFill } from "react-icons/bs";
 

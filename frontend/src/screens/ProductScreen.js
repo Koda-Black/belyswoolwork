@@ -8,7 +8,7 @@ import data from "../data";
 import Newsletter from "../components/Newsletter";
 import { Rating } from "../components/Rating";
 import LoadingBox from "../components/LoadingBox";
-import MessageBox from "./MessageBox";
+import MessageBox from "../components/MessageBox";
 import { getError } from "../utils";
 import { Store } from "../Store";
 import Product from "../components/Product";
