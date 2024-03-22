@@ -13,8 +13,6 @@ const categoriesRouter = require("./routes/categoriesRoutes");
 require("dotenv/config");
 const { errorHandler } = require("../backend/middlewares/error-handler.js");
 
-// Define __dirname before using it
-
 app.use(cors());
 app.options("*", cors());
 
