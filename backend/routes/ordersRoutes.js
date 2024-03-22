@@ -1,7 +1,6 @@
 const express = require("express");
-const stripe = require("stripe")(
-  `sk_test_51OwXukB9RrPApwN7CoC4EMDLJBMerGmxQJZcfv8gys1om5yCbyRbDkvX5TW5KFCNH18S8c691BPiyWRTU3P1AKY800zyacIwSP`
-);
+const stripe = require("stripe")(process.env.STRIPE_SECRET);
+const paystack = require("paystack")(process.env.PAYSTACK_SECRET);
 
 const {
   isAuth,
@@ -13,6 +12,7 @@ const {
 const {
   createOrder,
   getOrderList,
+  getOrderHistory,
   getOrder,
   updateOrder,
   deleteOrder,
@@ -24,6 +24,33 @@ const {
 const router = express.Router();
 
 // create stripe payment route
+
+// create new order
+router.post("/", isAuth, createOrder);
+
+router.get("/mine", isAuth, getOrderHistory);
+
+// get one order
+router.get("/:id", isAuth, getOrder);
+
+// get all orders
+router.get("/", isAuth, isAdmin, getOrderList);
+
+// get total sales
+router.get("/get/totalsales", getTotalSales);
+
+// get order count
+router.get("/get/ordercount", getCount);
+
+// get user order history
+// router.get("/get/userorders/:userid", getUserOrderHistory);
+
+// update order status
+router.put("/:id", updateOrder);
+
+// delete order
+router.delete("/:id", deleteOrder);
+
 router.post("/create-checkout-session", async (req, res) => {
   const { products } = req.body;
 
@@ -49,28 +76,23 @@ router.post("/create-checkout-session", async (req, res) => {
   res.json({ id: session.id });
 });
 
-// create new order
-router.post("/", isAuth, createOrder);
+router.post("/verify-payment", async (req, res) => {
+  const { reference } = req.body;
 
-// get one order
-router.get("/:id", isAuth, getOrder);
-
-// get all orders
-router.get("/", isAuth, isAdmin, getOrderList);
-
-// get total sales
-router.get("/get/totalsales", getTotalSales);
-
-// get order count
-router.get("/get/ordercount", getCount);
-
-// get user order history
-router.get("/get/userorders/:userid", getUserOrderHistory);
-
-// update order status
-router.put("/:id", updateOrder);
-
-// delete order
-router.delete("/:id", deleteOrder);
+  try {
+    const response = await paystack.transactions.verify(reference);
+    if (response.data.status === "success") {
+      // Payment successful, handle accordingly (e.g., update order status)
+      console.log("Payment verified successfully");
+      res.status(200).json({ message: "Payment successful" });
+    } else {
+      console.log("Payment verification failed");
+      res.status(400).json({ message: "Payment verification failed" });
+    }
+  } catch (error) {
+    console.error("Error verifying payment:", error);
+    res.status(500).json({ message: "Error verifying payment" });
+  }
+});
 
 module.exports = router;

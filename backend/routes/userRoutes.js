@@ -6,6 +6,7 @@ const {
   login,
   getCount,
   deleteUser,
+  updateUserProfile,
 } = require("../controllers/userController");
 const { isAuth } = require("../middlewares/jwt2");
 
@@ -30,5 +31,8 @@ router.get("/:id", getUser);
 
 // delete user
 router.delete("/:id", deleteUser);
+
+// update user profile
+router.put("/profile", isAuth, updateUserProfile);
 
 module.exports = router;

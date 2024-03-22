@@ -122,4 +122,39 @@ const getCount = async (req, res) => {
   }
 };
 
-module.exports = { signup, login, getUsers, getUser, getCount, deleteUser };
+const updateUserProfile = async (req, res) => {
+  const user = await User.findById(req.user.id);
+
+  if (user) {
+    user.name = req.body.name || user.name;
+    user.email = req.body.email || user.email;
+    if (req.body.password) {
+      user.password = bcrypt.hashSync(req.body.password, 10);
+    }
+
+    const updateUser = await user.save();
+
+    res.status(200).json({
+      message: "Success",
+      user: {
+        id: updateUser.id,
+        name: updateUser.name,
+        email: updateUser.email,
+        isAdmin: updateUser.isAdmin,
+        token: generateToken(updateUser),
+      },
+    });
+  } else {
+    res.status(404).send({ message: "User not found" });
+  }
+};
+
+module.exports = {
+  signup,
+  login,
+  getUsers,
+  getUser,
+  getCount,
+  deleteUser,
+  updateUserProfile,
+};

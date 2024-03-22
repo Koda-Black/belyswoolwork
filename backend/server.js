@@ -1,4 +1,5 @@
 const express = require("express");
+const path = require("path");
 const app = express();
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
@@ -12,16 +13,28 @@ const categoriesRouter = require("./routes/categoriesRoutes");
 require("dotenv/config");
 const { errorHandler } = require("../backend/middlewares/error-handler.js");
 
+// Define __dirname before using it
+
 app.use(cors());
 app.options("*", cors());
 
 // middleware
 app.use(express.json());
-
 app.use(bodyParser.json());
 app.use(morgan("tiny"));
-app.use("/public/uploads", express.static(__dirname + "/public/uploads"));
+app.use(
+  "/public/uploads",
+  express.static(path.join(__dirname, "/public/uploads"))
+);
 app.use(errorHandler);
+
+// Serve static files from the frontend build directory
+app.use(express.static(path.join(__dirname, "/frontend/build")));
+
+// Route for all other requests to serve the React app
+app.get("*", (req, res) =>
+  res.sendFile(path.join(__dirname, "/frontend/build/index.html"))
+);
 
 // routes
 app.use("/api/v1/products", productRouter);

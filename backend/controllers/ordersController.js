@@ -61,6 +61,12 @@ const getCount = async (req, res) => {
   }
 };
 
+const getOrderHistory = async (req, res) => {
+  const orders = await Order.find({ user: req.user.id });
+
+  res.status(200).send(orders);
+};
+
 const getOrder = async (req, res) => {
   try {
     const order = await Order.findById(req.params.id);
@@ -129,27 +135,28 @@ const deleteOrder = async (req, res) => {
   }
 };
 
-const getUserOrderHistory = async (req, res) => {
-  try {
-    const userOrderList = await Order.find({ user: req.params.userid })
-      .populate("user", "name")
-      .sort({ dateOrdered: -1 });
+// const getUserOrderHistory = async (req, res) => {
+//   try {
+//     const userOrderList = await Order.find({ user: req.params.userid })
+//       .populate("user", "name")
+//       .sort({ dateOrdered: -1 });
 
-    if (!userOrderList) {
-      return res.status(404).json({ message: "Could not find orders" });
-    }
+//     if (!userOrderList) {
+//       return res.status(404).json({ message: "Could not find orders" });
+//     }
 
-    res.status(200).json({ userOrderList });
-  } catch (error) {
-    res.status(500).json({ message: "Internal server erorr" });
-  }
-};
+//     res.status(200).json({ userOrderList });
+//   } catch (error) {
+//     res.status(500).json({ message: "Internal server erorr" });
+//   }
+// };
 
 module.exports = {
+  getOrderHistory,
   getOrder,
   getTotalSales,
   getOrderList,
-  getUserOrderHistory,
+  // getUserOrderHistory,
   getCount,
   createOrder,
   updateOrder,

@@ -1519,3 +1519,13 @@ footer .copyright {
 .shadow {
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Add a slight shadow */
 }
+
+.paystack-button {
+  /* Your custom styles here */
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}

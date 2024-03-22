@@ -16,6 +16,7 @@ const Navbar = () => {
     localStorage.removeItem("userInfo");
     localStorage.removeItem("shippingAddress");
     localStorage.removeItem("paymentMethod");
+    window.location.href = "/login";
   };
 
   return (
@@ -39,7 +40,7 @@ const Navbar = () => {
 
           <li className="user-profile">
             {userInfo ? (
-              <NavDropdown title={userInfo.user.name} id="basic-nav-dropdown">
+              <NavDropdown title={userInfo?.user?.name} id="basic-nav-dropdown">
                 <LinkContainer to="/profile">
                   <NavDropdown.Item>User Profile</NavDropdown.Item>
                 </LinkContainer>
@@ -49,7 +50,7 @@ const Navbar = () => {
                 <NavDropdown.Divider />
                 <Link
                   className="dropdown-item"
-                  to="#signout"
+                  to="/signout"
                   onClick={signoutHandler}
                 >
                   Sign Out

@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useReducer } from "react";
 // import useDeepCompareEffect from "use-deep-compare-effect";
+import { PaystackButton } from "react-paystack";
 import axios from "axios";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -11,7 +12,9 @@ import MessageBox from "../components/MessageBox";
 import Button from "react-bootstrap/Button";
 import { Store } from "../Store";
 import { useNavigate, useParams } from "react-router-dom";
+import { useState } from "react";
 import { getError } from "../utils";
+import { toast } from "react-toastify";
 import { Helmet } from "react-helmet-async";
 import { loadStripe } from "@stripe/stripe-js";
 
@@ -103,24 +106,72 @@ export default function OrderScreen() {
         console.log(result.error);
       } else {
         // Redirect to a new route without the /order prefix
-        navigate("/api/v1/orders/create-checkout-session");
+        // navigate("/api/v1/orders/create-checkout-session");
+        if (
+          session.payment_status === "paid" &&
+          session.state === "succeeded"
+        ) {
+          const updatedOrder = {
+            ...order,
+            isPaid: true,
+            paidAt: new Date.now(),
+          };
+
+          await axios.put(`${apiURL}/${orderId}`, updatedOrder, {
+            headers: { authorization: `Bearer ${userInfo.user.token}` },
+          });
+
+          dispatch({ type: "FETCH_SUCCESS", payload: updatedOrder });
+        } else {
+          toast.error(
+            getError("Payment failed. Check your network and try again")
+          );
+        }
       }
     } catch (error) {
       console.error("Error:", error);
     }
   };
 
-  const handlePaystackPayment = async () => {};
+  const handlePaystackPaymentSuccess = async ({ reference }) => {
+    const apiURL = "/api/v1/orders";
+    const headers = {
+      "Content-Type": "application/json",
+    };
+    try {
+      const response = await fetch(`${apiURL}/verify-payment`, {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify(reference),
+      });
+      const data = await response.json();
+      navigate("/payment/success");
+    } catch (error) {
+      toast.error(getError("Payment failed. Check your network and try again"));
+    }
+  };
+
+  const handlePaymentClose = () => {
+    navigate("/payment/cancel");
+  };
 
   const makePayment = async () => {
     if (order.paymentMethod === "Stripe") {
       await handleStripePayment();
     } else if (order.paymentMethod === "Paystack") {
-      await handlePaystackPayment();
+      await handlePaystackPaymentSuccess();
     } else {
       console.error("Unsupported payment method:", order.paymentMethod);
     }
   };
+
+  const [amount, setAmount] = useState(order.totalPrice || 0);
+  const [firstname, setFirstname] = useState(
+    userInfo.user.name.split(" ")[0] || ""
+  );
+  const [lastname, setLastname] = useState(
+    userInfo.user.name.split(" ")[1] || ""
+  );
 
   return loading ? (
     <LoadingBox></LoadingBox>
@@ -223,18 +274,37 @@ export default function OrderScreen() {
                 <ListGroup.Item>
                   <Row>
                     <Col>Order Total</Col>
-                    <Button
-                      onClick={makePayment}
-                      className={`btn ${
-                        order.totalPrice === 0 ? "btn-secondary" : "btn-success"
-                      }`}
-                      type="button"
-                    >
-                      Pay ₦{" "}
-                      {order.totalPrice === 0
-                        ? "0"
-                        : order.totalPrice.toFixed(2)}
-                    </Button>
+                    {order.paymentMethod === "Paystack" ? (
+                      <PaystackButton
+                        text={`Pay ₦ ${
+                          order.totalPrice === 0
+                            ? "0"
+                            : order.totalPrice.toFixed(2)
+                        }`}
+                        className="paystack-button"
+                        firstname={firstname}
+                        lastname={lastname}
+                        amount={amount * 100} // Convert amount to kobo for Paystack
+                        publicKey={
+                          "pk_test_5b074168287807018627f691eb329fa4c3bb200c"
+                        }
+                        onSuccess={handlePaystackPaymentSuccess}
+                        onClose={handlePaymentClose}
+                      />
+                    ) : (
+                      <Button
+                        onClick={makePayment}
+                        className={`btn ${
+                          order.totalPrice === 0 ? "btn-primary" : "btn-success"
+                        }`}
+                        type="button"
+                      >
+                        Pay ₦{" "}
+                        {order.totalPrice === 0
+                          ? "0"
+                          : order.totalPrice.toFixed(2)}
+                      </Button>
+                    )}
                   </Row>
                 </ListGroup.Item>
               </ListGroup>
