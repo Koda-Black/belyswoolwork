@@ -9,18 +9,22 @@ const {
   getFeaturedProducts,
   uploadGalleryImages,
   getProductDetails,
+  productCategory,
 } = require("../controllers/productController");
 
 const router = express.Router();
+
+// get all products
+router.get("/", getProductList);
+
+// get product category
+router.get("/categories", productCategory);
 
 // get one product
 router.get("/:id", getProduct);
 
 // get product details
 router.get("/slug/:slug", getProductDetails);
-
-// get all products
-router.get("/", getProductList);
 
 // get product count
 router.get("/get/count", getCount);

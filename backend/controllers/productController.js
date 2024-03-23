@@ -177,6 +177,27 @@ const updateProduct = async (req, res) => {
   }
 };
 
+const productCategory = async (req, res) => {
+  try {
+    // Populate the 'category' field to get the complete category objects
+    const products = await Product.find().populate("category");
+    if (!products || products.length === 0) {
+      return res.status(404).send("No products found");
+    }
+
+    // Extract the names from the populated category objects
+    const categoryNames = products.map((product) => product.category.name);
+
+    // Remove duplicate category names if needed
+    const uniqueCategoryNames = [...new Set(categoryNames)];
+
+    res.status(200).send(uniqueCategoryNames);
+  } catch (error) {
+    console.error("Error fetching product categories:", error);
+    res.status(500).send("Internal Server Error");
+  }
+};
+
 const deleteProduct = async (req, res) => {
   try {
     const product = await Product.findByIdAndDelete(req.params.id);
@@ -280,4 +301,5 @@ module.exports = {
   getCount,
   getFeaturedProducts,
   uploadGalleryImages,
+  productCategory,
 };

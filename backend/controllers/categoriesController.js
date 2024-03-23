@@ -24,10 +24,10 @@ const getAllCategory = async (req, res) => {
       return res.status(404).json({ message: "No categories found!" });
     }
 
-    res.status(200).json(categoryList);
+    res.status(200).send(categoryList);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Internal Server Error" });
+    res.status(500).send({ message: "Internal Server Error" });
   }
 };
 

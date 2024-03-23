@@ -27,12 +27,12 @@ app.use(
 app.use(errorHandler);
 
 // Serve static files from the frontend build directory
-app.use(express.static(path.join(__dirname, "/frontend/build")));
+// app.use(express.static(path.join(__dirname, "/frontend/build")));
 
 // Route for all other requests to serve the React app
-app.get("*", (req, res) =>
-  res.sendFile(path.join(__dirname, "/frontend/build/index.html"))
-);
+// app.get("*", (req, res) =>
+//   res.sendFile(path.join(__dirname, "/frontend/build/index.html"))
+// );
 
 // routes
 app.use("/api/v1/products", productRouter);

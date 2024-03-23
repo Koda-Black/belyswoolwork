@@ -163,8 +163,15 @@ body {
   display: none; /* Hide the underline for active links */
 }
 
+.logo-menu {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .logo {
   font-size: 1.5rem;
+  margin-left: 5px;
 }
 
 .loading-spinner {
@@ -291,8 +298,8 @@ form.signup button {
 
 #navbar,
 #bar {
-  font-size: 20px;
-  margin-left: -4px;
+  font-size: 16px;
+  /* margin-left: -4px; */
 }
 
 #mobile {
@@ -1237,7 +1244,7 @@ footer .copyright {
   #mobile .mobile-cart {
     color: #1a1a1a;
     font-size: 20px;
-    padding-right: 30px;
+    padding-right: 10px;
   }
 
   #close {
@@ -1528,4 +1535,38 @@ footer .copyright {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+}
+
+/* sidebar */
+#siteContainer {
+  transition: 0.4s;
+}
+
+/* sidebar */
+.navbar-brand {
+  font-weight: bold;
+}
+.side-navbar {
+  width: 240px;
+  height: 100vh;
+  bottom: 0;
+  padding-top: 1rem;
+  position: absolute;
+  left: -300px;
+  background-color: #100901;
+  transition: 0.5s;
+}
+
+.site-container {
+  transition: 0.4s;
+}
+.active-cont {
+  margin-left: 240px;
+  margin-bottom: 0;
+}
+.active-nav {
+  left: 0;
+}
+.text-bold {
+  font-weight: bold;
 }
