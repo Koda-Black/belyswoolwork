@@ -1,6 +1,6 @@
 import React, { useReducer } from "react";
 import { useEffect, useContext } from "react";
-import logger from "use-reducer-logger";
+// import logger from "use-reducer-logger";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { PiShoppingCartBold } from "react-icons/pi";
@@ -49,14 +49,11 @@ const Product = (props) => {
     toast.success("Item Added To Cart Successfully");
   };
 
-  const [{ loading, error, productList }, dispatch] = useReducer(
-    logger(reducer),
-    {
-      loading: true,
-      error: "",
-      productList: [],
-    }
-  );
+  const [{ loading, error, productList }, dispatch] = useReducer(reducer, {
+    loading: true,
+    error: "",
+    productList: [],
+  });
   useEffect(() => {
     const fetchData = async () => {
       dispatch({ type: "FETCH_REQUEST" });
