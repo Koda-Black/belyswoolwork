@@ -464,7 +464,7 @@ form.signup button {
 }
 
 #product1 .product .description span {
-  color: #606063;
+  /* color: #606063; */
   font-size: 12px;
 }
 
@@ -475,9 +475,9 @@ form.signup button {
   text-decoration: none;
 }
 
-#product1 .product .description .ratingIcon {
-  font-size: 12px;
-  color: rgb(243, 181, 25);
+.star span {
+  color: #ffc000 !important;
+  align-items: center;
 }
 
 #product1 .product .description h4 {

@@ -189,12 +189,86 @@ const productCategory = async (req, res) => {
     const categoryNames = products.map((product) => product.category.name);
 
     // Remove duplicate category names if needed
-    const uniqueCategoryNames = [...new Set(categoryNames)];
+    const categories = [...new Set(categoryNames)];
 
-    res.status(200).send(uniqueCategoryNames);
+    res.status(200).send(categories);
   } catch (error) {
     console.error("Error fetching product categories:", error);
     res.status(500).send("Internal Server Error");
+  }
+};
+
+const searchProduct = async (req, res) => {
+  const PAGE_SIZE = 3;
+  try {
+    const { query } = req;
+
+    const pageSize = query.pageSize || PAGE_SIZE;
+    const page = query.page || 1;
+    const category = query.category || "";
+    const brand = query.brand || "";
+    const price = query.price || "";
+    const rating = query.rating || "";
+    const order = query.order || "";
+    const searchQuery = query.searchQuery || "";
+
+    const queryFilter =
+      searchQuery && searchQuery !== "all"
+        ? { name: { $regex: searchQuery, $options: "i" } }
+        : {};
+    const categoryFilter = category && category !== "all" ? { category } : {};
+    const ratingFilter =
+      rating && rating !== "all" ? { rating: { $gte: Number(rating) } } : {};
+    const priceFilter =
+      price && price !== "all"
+        ? {
+            price: {
+              $gte: Number(price.split("-")[0]),
+              $lte: Number(price.split("-")[1]),
+            },
+          }
+        : {};
+
+    const sortOrder =
+      order === "featured"
+        ? { featured: -1 }
+        : order === "lowest"
+        ? { price: 1 }
+        : order === "highest"
+        ? { price: -1 }
+        : order === "toprated"
+        ? { rating: -1 }
+        : order === "newest"
+        ? { createdAt: -1 }
+        : { id: -1 };
+
+    const queryOptions = {
+      ...queryFilter,
+      ...categoryFilter,
+      ...priceFilter,
+      ...ratingFilter,
+    };
+
+    const products = await Product.find(queryOptions)
+      .sort(sortOrder)
+      .skip(pageSize * (page - 1))
+      .limit(pageSize);
+
+    const countProducts = await Product.countDocuments(queryOptions);
+
+    if (products.length === 0) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    res.send({
+      products,
+      countProducts,
+      page,
+      pages: Math.ceil(countProducts / pageSize),
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };
 
@@ -302,4 +376,5 @@ module.exports = {
   getFeaturedProducts,
   uploadGalleryImages,
   productCategory,
+  searchProduct,
 };

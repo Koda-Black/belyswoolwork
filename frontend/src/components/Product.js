@@ -90,7 +90,11 @@ const Product = (props) => {
               <Link to={`/product/${product.slug}`}>
                 <h5>{product.name}</h5>
               </Link>
-              <Rating rating={product.rating} numReviews={product.numReviews} />
+              <Rating
+                id="rating"
+                rating={product.rating}
+                numReviews={product.numReviews}
+              />
               <h4>₦ {product.price}</h4>
             </div>
 

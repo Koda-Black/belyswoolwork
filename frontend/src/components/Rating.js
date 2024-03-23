@@ -4,7 +4,7 @@ import { FaStar } from "react-icons/fa";
 import { FaRegStar } from "react-icons/fa";
 
 export const Rating = (props) => {
-  const { rating, numReviews } = props;
+  const { rating, numReviews, caption } = props;
 
   return (
     <div className="star">
@@ -57,7 +57,12 @@ export const Rating = (props) => {
           <FaRegStar />
         )}
       </span>
-      <span className="ratingIcon"> {numReviews} Reviews</span>
+      <span className="ratingIcon"> </span>
+      {caption ? (
+        <span>{caption}</span>
+      ) : (
+        <span>{" " + numReviews + " reviews"}</span>
+      )}
     </div>
   );
 };

@@ -10,12 +10,13 @@ const {
   uploadGalleryImages,
   getProductDetails,
   productCategory,
+  searchProduct,
 } = require("../controllers/productController");
 
 const router = express.Router();
 
 // get all products
-router.get("/", getProductList);
+router.get("/", getProductList, searchProduct);
 
 // get product category
 router.get("/categories", productCategory);

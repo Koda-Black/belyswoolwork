@@ -35,6 +35,10 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import { FaBars } from "react-icons/fa6";
 import SearchBox from "./components/SearchBox";
+import SearchScreen from "./screens/SearchScreen";
+import ProtectedRoute from "./components/ProtectedRoute";
+import DashboardScreens from "./screens/DashboardScreens";
+import AdminRoute from "./components/AdminRoute";
 
 function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -99,9 +103,9 @@ function App() {
               <li>
                 <Link to="/shop">Shop</Link>
               </li>
-              <li>
+              {/* <li>
                 <Link to="/about">About</Link>
-              </li>
+              </li> */}
 
               <li className="user-profile">
                 {userInfo ? (
@@ -128,7 +132,24 @@ function App() {
                   <Link to="/login">Login</Link>
                 )}
               </li>
-
+              <li>
+                {userInfo && userInfo.user.isAdmin && (
+                  <NavDropdown title="Admin" id="admin-nav-dropdown">
+                    <LinkContainer to="/admin/dashboard">
+                      <NavDropdown.Item>Dashboard</NavDropdown.Item>
+                    </LinkContainer>
+                    <LinkContainer to="/admin/productlist">
+                      <NavDropdown.Item>Products</NavDropdown.Item>
+                    </LinkContainer>
+                    <LinkContainer to="/admin/orderlist">
+                      <NavDropdown.Item>Orders</NavDropdown.Item>
+                    </LinkContainer>
+                    <LinkContainer to="/admin/userlist">
+                      <NavDropdown.Item>Users</NavDropdown.Item>
+                    </LinkContainer>
+                  </NavDropdown>
+                )}
+              </li>
               <li>
                 <Link to="/cart">
                   <IoBagHandleOutline id="lg-bag" style={{ fontSize: 20 }} />
@@ -186,23 +207,56 @@ function App() {
         <div id="siteContainer">
           <main className="pages">
             <Routes>
-              <Route path="/" element={<HomeScreen />} />
               <Route path="/product/:slug" element={<ProductScreen />} />
               <Route path="/cart" element={<CartScreen />} />
+              <Route path="/search" element={<SearchScreen />} />
               <Route path="/login" element={<LoginScreen />} />
               <Route path="/signup" element={<SignupScreen />} />
-              <Route path="/profile" element={<ProfileScreen />} />
+              <Route
+                path="/profile"
+                element={
+                  <ProtectedRoute>
+                    <ProfileScreen />
+                  </ProtectedRoute>
+                }
+              />
               <Route path="/shipping" element={<ShippingScreen />} />
               <Route path="/payment" element={<PaymentMethodScreen />} />
               <Route path="/placeorder" element={<PlaceOrderScreen />} />
-              <Route path="/order/:id" element={<OrderScreen />} />
-              <Route path="/orderhistory" element={<OrderHistoryScreen />} />
+              <Route
+                path="/order/:id"
+                element={
+                  <ProtectedRoute>
+                    <OrderScreen />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/orderhistory"
+                element={
+                  <ProtectedRoute>
+                    <OrderHistoryScreen />
+                  </ProtectedRoute>
+                }
+              />
               <Route path="/payment/success" element={<SuccessfulScreen />} />
               <Route path="/payment/cancel" element={<CancelScreen />} />
               <Route path="/contact" element={<Contact />} />
-              <Route path="/about" element={<AboutScreen />} />
+              {/* <Route path="/about" element={<AboutScreen />} /> */}
               <Route path="/blog" element={<Blog />} />
               <Route path="/shop" element={<Shop />} />
+
+              {/* Admin Routes*/}
+              <Route
+                path="/admin/dashboard"
+                element={
+                  <AdminRoute>
+                    <DashboardScreens />
+                  </AdminRoute>
+                }
+              />
+
+              <Route path="/" element={<HomeScreen />} />
             </Routes>
           </main>
           <Footer />
