@@ -40,7 +40,7 @@ app.use("/api/v1/users", userRouter);
 app.use("/api/v1/categories", categoriesRouter);
 app.use("/api/v1/orders", ordersRouter);
 
-// connect to db
+//connect to db
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {
