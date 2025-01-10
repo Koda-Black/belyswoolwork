@@ -1,0 +1,22 @@
+{
+  "name": "belyswoolwork",
+  "version": "1.0.0",
+  "description": "This is a MERN fullstack ecommerce shop featuring all kinds of products, categories and users for an encompassing experience to a real world application of such an application.",
+  "main": "index.js",
+  "scripts": {
+    "build": "cd backend && npm install && cd ../frontend && npm install && npm run build",
+    "start": "node backend/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/belyswoolwork/belyswoolwork.git"
+  },
+  "bugs": {
+    "url": "https://github.com/belyswoolwork/issues"
+  },
+  "keywords": [],
+  "author": "Koda-Black",
+  "license": "ISC",
+  "homepage": "https://github.com/belyswoolwork/belyswool#readme"
+}
